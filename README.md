@@ -35,6 +35,7 @@ No hay dependencias ni paso de compilación. Las únicas peticiones externas son
 | `COST` | Costes por evento de cada día (`act`, `trans`, `food`), en euros por persona. Se asocian por orden de aparición. |
 | `EXTRA` | Gastos del día que no pertenecen a un evento (desayunos, cenas, taxis). |
 | `LODGE` | Precio de la habitación doble por noche. Se reparte entre dos personas. |
+| `FLIGHT` | Precio de los vuelos por persona, ida y vuelta. |
 | `OPTS` | Opciones de transporte, entradas, comida y alojamiento de cada día. |
 | `P` | Puntos del mapa con longitud y latitud. |
 | `ROADS`, `NILE`, `SEA`, `DELTA` | Geografía del mapa (carreteras, río, mar y delta). |
@@ -66,6 +67,6 @@ La web se publica desde la rama `main`, carpeta raíz, con GitHub Pages. Cada `g
 ## Supuestos y límites
 
 - Precios en euros por persona, suponiendo dos viajeros que comparten taxi, coche y habitación. Son estimaciones y conviene confirmarlos en las webs oficiales antes de viajar.
-- El presupuesto no incluye vuelos.
+- El presupuesto incluye los vuelos (€256 ida y vuelta por persona) y 6 noches de alojamiento. No incluye compras personales, propinas ni seguro.
 - Los mapas son esquemas con trazados aproximados. Sirven para orientarse, no para navegar, y la posición de algunos puntos (por ejemplo la rave o el NMEC) es aproximada.
 - Los horarios de museos y yacimientos cambian según la fuente. Revisa las webs oficiales unas semanas antes.
