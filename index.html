@@ -84,9 +84,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
   :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
 }
-.nav ul { display: flex; gap: .4rem; list-style: none; margin: 0; padding: .6rem 0; overflow-x: auto; }
-.nav a { display: block; text-decoration: none; font-family: var(--display); font-size: .85rem; letter-spacing: .06em; padding: .35rem .8rem; border: 1px solid var(--line); border-radius: 2px; white-space: nowrap; background: var(--surface); }
-.nav a:hover { border-color: var(--gold); }
+.nav ul { display: flex; align-items: stretch; gap: .3rem; list-style: none; margin: 0; padding: .45rem 0; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.nav ul::-webkit-scrollbar { display: none; }
+.nav li { flex: none; display: flex; }
+.nav a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .1rem; min-width: 3rem; min-height: 2.75rem; padding: .2rem .6rem; border: 1px solid transparent; border-radius: 6px; text-decoration: none; line-height: 1.05; color: var(--fg); -webkit-tap-highlight-color: transparent; }
+.nav a b { font-family: var(--display); font-size: 1.05rem; }
+.nav a span { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.nav a:not(.txt)::after { content: ""; width: .38rem; height: .38rem; margin-top: .05rem; background: var(--z); transform: rotate(45deg); }
+.nav a.txt { flex-direction: row; font-family: var(--display); font-size: .8rem; letter-spacing: .08em; padding-inline: .8rem; }
+.nav a:hover { background: color-mix(in srgb, var(--gold) 14%, var(--surface)); }
+.nav a[aria-current="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.nav a[aria-current="true"] span { color: inherit; opacity: .85; }
+.nav .sep { width: 1px; margin: .35rem .25rem; background: var(--line); }
+.progress { height: 3px; background: var(--line); }
+.progress span { display: block; height: 100%; width: 0; background: var(--terra); }
 .legend { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; padding-block: 1.5rem .25rem; font-size: .95rem; color: var(--muted); }
 .legend span::before { content: ""; display: inline-block; width: .8rem; height: .8rem; margin-right: .4rem; background: var(--c); transform: rotate(45deg) scale(.85); }
 .intro { color: var(--muted); font-size: .95rem; margin: .25rem 0 0; max-width: 70ch; }
@@ -272,22 +283,24 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
 
 <nav class="nav" aria-label="Días del viaje">
   <div class="wrap">
-    <ul>
-      <li><a href="#jue25">Jue 25</a></li>
-      <li><a href="#vie26">Vie 26</a></li>
-      <li><a href="#sab27">Sáb 27</a></li>
-      <li><a href="#dom28">Dom 28</a></li>
-      <li><a href="#lun29">Lun 29</a></li>
-      <li><a href="#mar30">Mar 30</a></li>
-      <li><a href="#mie31">Mié 31</a></li>
-      <li><a href="#presupuesto">Presupuesto</a></li>
-      <li><a href="#notas">Notas</a></li>
+    <ul id="navList">
+      <li><a href="#jue25" style="--z: var(--gold)"><b>25</b><span>Jue</span></a></li>
+      <li><a href="#vie26" style="--z: var(--gold)"><b>26</b><span>Vie</span></a></li>
+      <li><a href="#sab27" style="--z: var(--gold)"><b>27</b><span>Sáb</span></a></li>
+      <li><a href="#dom28" style="--z: var(--nile)"><b>28</b><span>Dom</span></a></li>
+      <li><a href="#lun29" style="--z: var(--lapis)"><b>29</b><span>Lun</span></a></li>
+      <li><a href="#mar30" style="--z: var(--terra)"><b>30</b><span>Mar</span></a></li>
+      <li><a href="#mie31" style="--z: var(--nile)"><b>31</b><span>Mié</span></a></li>
+      <li class="sep" aria-hidden="true"></li>
+      <li><a class="txt" href="#presupuesto">Presupuesto</a></li>
+      <li><a class="txt" href="#notas">Notas</a></li>
     </ul>
     <button type="button" class="theme-btn" id="themeBtn" aria-label="Cambiar a modo nocturno" title="Cambiar a modo nocturno">
       <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
       <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></g></svg>
     </button>
   </div>
+  <div class="progress" aria-hidden="true"><span id="navProg"></span></div>
 </nav>
 
 <main class="wrap">
@@ -906,6 +919,33 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       day.appendChild(wrap);
     }
   });
+
+  /* ---------- Navegación: día activo y progreso ---------- */
+  (function () {
+    var list = document.getElementById('navList'), prog = document.getElementById('navProg');
+    var links = {}, ids = [];
+    list.querySelectorAll('a').forEach(function (a) { var id = a.getAttribute('href').slice(1); links[id] = a; ids.push(id); });
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var setActive = function (id) {
+      Object.keys(links).forEach(function (k) { if (k === id) links[k].setAttribute('aria-current', 'true'); else links[k].removeAttribute('aria-current'); });
+      var a = links[id];
+      if (a) list.scrollTo({ left: a.offsetLeft - (list.clientWidth - a.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin: '-25% 0px -65% 0px' });
+      ids.forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    }
+    var tick = false;
+    var upd = function () {
+      tick = false;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (h > 0 ? Math.min(100, Math.max(0, window.scrollY / h * 100)) : 0) + '%';
+    };
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  })();
 
   /* ---------- Modo nocturno ---------- */
   (function () {
