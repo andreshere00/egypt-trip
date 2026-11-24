@@ -12,13 +12,19 @@ Itinerario interactivo de un viaje de siete días por Egipto (Giza, El Cairo, Al
 - **Opciones de transporte, entradas y comida** para cada día, con precios estimados.
 - **Alojamiento** con buena relación calidad-precio (Giza y Zamalek/Downtown).
 - **Presupuesto** por día y total (entradas, transporte, comida y alojamiento), por persona.
-- **Tema claro y oscuro** según el sistema, y diseño adaptado al móvil.
+- **Fotos y fichas «por qué ir»** de cada lugar: miniatura en el itinerario y ficha emergente al pasar el ratón, enfocar o tocar un pin del mapa o un evento.
+- **Recorrido día a día**: la navegación fija marca el día visible, muestra el progreso del scroll y cada tarjeta enlaza con el día siguiente.
+- **Tarjetas por día** con cabecera (fecha, zona y coste del día), mapa, itinerario y pestañas de transporte, entradas, comida y alojamiento.
+- **Modo nocturno** con botón en la barra, que recuerda tu elección y respeta la preferencia del sistema.
+- **Diseño adaptado al móvil**: mapas, tablas y fichas se adaptan a pantallas estrechas (la ficha se muestra como panel inferior).
 
 ## Estructura
 
 ```
 .
 ├── index.html   # toda la web: HTML, CSS y JavaScript en un solo archivo
+├── assets/img/  # fotos de los lugares (Wikimedia Commons, ≤ 960 px)
+├── CREDITS.md   # autores y licencias de las fotos
 ├── .nojekyll    # evita el procesado con Jekyll en GitHub Pages
 ├── .gitignore
 └── README.md
@@ -38,6 +44,7 @@ No hay dependencias ni paso de compilación. Las únicas peticiones externas son
 | `FLIGHT` | Precio de los vuelos por persona, ida y vuelta. |
 | `OPTS` | Opciones de transporte, entradas, comida y alojamiento de cada día. |
 | `P` | Puntos del mapa con longitud y latitud. |
+| `PLACE`, `PH`, `EVP` | Foto y texto «por qué ir» de cada lugar, créditos de las fotos y lugar asociado a cada evento. |
 | `ROADS`, `NILE`, `SEA`, `DELTA` | Geografía del mapa (carreteras, río, mar y delta). |
 | `MAPS` | Mapa de cada día: encuadre, ruta, etiquetas y modo de transporte. |
 
@@ -47,7 +54,7 @@ Las distancias se calculan con la fórmula de Haversine sobre la ruta, multiplic
 
 1. Cambia el texto del evento en la sección del día (`<section class="day" id="...">`).
 2. Ajusta su coste en `COST` (el orden del array es el de los eventos).
-3. Si cambia una parada, edita su punto en `P` y la ruta del día en `MAPS`.
+3. Si cambia una parada, edita su punto en `P`, la ruta del día en `MAPS` y, si tiene foto, su entrada en `PLACE` y `EVP`.
 4. Abre `index.html` en el navegador y comprueba el mapa, la leyenda y el presupuesto.
 
 ## Probar en local
@@ -69,4 +76,5 @@ La web se publica desde la rama `main`, carpeta raíz, con GitHub Pages. Cada `g
 - Precios en euros por persona, suponiendo dos viajeros que comparten taxi, coche y habitación. Son estimaciones y conviene confirmarlos en las webs oficiales antes de viajar.
 - El presupuesto incluye los vuelos (€256 ida y vuelta por persona) y 6 noches de alojamiento. No incluye compras personales, propinas ni seguro.
 - Los mapas son esquemas con trazados aproximados. Sirven para orientarse, no para navegar, y la posición de algunos puntos (por ejemplo la rave o el NMEC) es aproximada.
+- Las fotos son de Wikimedia Commons y se acreditan en [CREDITS.md](CREDITS.md). La foto de las dunas es ilustrativa.
 - Los horarios de museos y yacimientos cambian según la fuente. Revisa las webs oficiales unas semanas antes.
