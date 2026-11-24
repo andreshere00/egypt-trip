@@ -150,8 +150,51 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .bar span { display: block; min-width: 0; }
 .bar .act { background: var(--gold); } .bar .trans { background: var(--lapis); } .bar .food { background: var(--papyrus); } .bar .lodge { background: var(--nile); }
 .opt.sleep { --k: var(--nile); }
-.barleg { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-size: .95rem; color: var(--muted); }
-.fine { color: var(--muted); font-size: .95rem; margin: 1rem 0 0; max-width: 70ch; }
+
+.budget .bh { font-family: var(--display); font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 1.75rem 0 .6rem; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: .75rem; }
+.tile { background: var(--surface); border: 1px solid var(--line); padding: .8rem 1rem; display: grid; gap: .1rem; min-width: 0; }
+.tile small { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.tile b { font-family: var(--display); font-size: 1.7rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.tile span { color: var(--muted); font-size: .85rem; }
+.tile.main { border-top: 4px solid var(--terra); }
+.bar { height: 1.5rem; margin: 0 0 .9rem; }
+.bar .flight, .bleg .flight i { background: var(--terra); }
+.bleg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .4rem 1.5rem; font-variant-numeric: tabular-nums; }
+.bleg li { display: flex; align-items: baseline; gap: .5rem; }
+.bleg i { flex: none; width: .8rem; height: .8rem; align-self: center; }
+.bleg .act i { background: var(--gold); } .bleg .trans i { background: var(--lapis); } .bleg .food i { background: var(--papyrus); } .bleg .lodge i { background: var(--nile); }
+.bleg b { margin-left: auto; }
+.bleg span { color: var(--muted); font-size: .9rem; min-width: 2.6rem; text-align: right; }
+.budget table { min-width: 40rem; }
+.budget th, .budget td { padding: .55rem .9rem; }
+.budget tbody th, .budget tfoot th { font-family: var(--body); font-size: 1rem; letter-spacing: 0; text-transform: none; color: var(--fg); font-weight: 500; text-align: left; position: sticky; left: 0; background: var(--surface); }
+.budget thead th { position: static; }
+.budget thead th[data-k]::before { content: ""; display: inline-block; width: .55rem; height: .55rem; margin-right: .4rem; background: var(--kc); }
+.budget th[data-k="act"] { --kc: var(--gold); } .budget th[data-k="trans"] { --kc: var(--lapis); } .budget th[data-k="food"] { --kc: var(--papyrus); } .budget th[data-k="lodge"] { --kc: var(--nile); }
+.budget tbody tr:nth-child(even) td, .budget tbody tr:nth-child(even) th { background: color-mix(in srgb, var(--gold) 5%, var(--surface)); }
+.budget td b { font-family: var(--display); }
+.budget .dim0 { color: var(--muted); font-size: .9rem; }
+.mini { display: flex; height: .7rem; width: 7rem; margin-left: auto; background: var(--line); }
+.mini span { display: block; }
+.mini .act { background: var(--gold); } .mini .trans { background: var(--lapis); } .mini .food { background: var(--papyrus); } .mini .lodge { background: var(--nile); }
+.budget tfoot td, .budget tfoot th { font-family: var(--display); font-weight: 700; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--gold) 14%, var(--surface)); }
+.budget tfoot th { font-family: var(--display); font-weight: 700; }
+.budget tfoot .fl td, .budget tfoot .fl th { background: var(--surface); font-weight: 500; }
+.budget tfoot .fl td:nth-child(2) { text-align: left; color: var(--muted); font-family: var(--body); font-weight: 400; }
+.budget tfoot .grand td, .budget tfoot .grand th { background: var(--ink); color: var(--bg); font-size: 1.05rem; border-bottom: 0; }
+.bnotes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.bnotes > div { background: var(--surface); border: 1px solid var(--line); padding: 1rem 1.25rem; min-width: 0; }
+.bnotes h3 { font-family: var(--display); font-size: 1rem; margin: 0 0 .5rem; color: var(--terra); }
+.bnotes ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .45rem; color: var(--muted); font-size: .97rem; }
+.bnotes li::marker { color: var(--gold); }
+.budget td:last-child, .budget thead th:last-child { position: sticky; right: 0; background: var(--surface); box-shadow: -1px 0 0 var(--line); }
+.budget tbody tr:nth-child(even) td:last-child { background: color-mix(in srgb, var(--gold) 5%, var(--surface)); }
+.budget tfoot .sub td:last-child { background: color-mix(in srgb, var(--gold) 14%, var(--surface)); }
+.budget tfoot .fl td:last-child { background: var(--surface); }
+.budget tfoot .grand td:last-child { background: var(--ink); color: var(--bg); }
+.budget tfoot .grand th { position: static; }
+@media (max-width: 640px) { .tile b { font-size: 1.4rem; } .mini { width: 5rem; } }
 
 /* Notas */
 .notes { background: var(--surface); border-top: 4px solid var(--gold); }
@@ -279,7 +322,7 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       <div class="date"><span class="dow">Martes</span><span class="num">30</span><span class="place">Saqqara y El Cairo</span></div>
       <ul class="events">
         <li class="ev new"><span class="time">8:30</span><div><h3>Saqqara y Dahshur</h3><p>Pirámide escalonada, Pirámide Roja y Romboidal; mucha menos gente que en Giza.</p></div></li>
-        <li class="ev"><span class="time">15:00</span><div><h3>Shopping</h3><p>Boutiques de diseño egipcio en Zamalek: algodón, joyería, perfumes.</p></div></li>
+        <li class="ev opt"><span class="time">15:00</span><div><h3>Buggies en el desierto</h3><p>Ruta de 1 a 2 h por el desierto de Saqqara con la luz del atardecer. Las compras pasan al miércoles.</p></div></li>
         <li class="ev"><span class="time">19:00</span><div><h3>Old Cairo de noche</h3><p>Khan el-Khalili para compras, shisha en El Fishawy y cena en la zona.</p></div></li>
       </ul>
     </section>
@@ -289,7 +332,7 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       <ul class="events">
         <li class="ev new"><span class="time">10:00</span><div><h3>Museo de las Momias (NMEC)</h3><p>Las momias reales, que no están en el GEM.</p></div></li>
         <li class="ev"><span class="time">14:00</span><div><h3>Comida y últimas compras</h3><p>Dejad las maletas en el hotel.</p></div></li>
-        <li class="ev"><span class="time">16:30</span><div><h3>Paseo por Zamalek sin prisa</h3><p>Cafés, últimas compras y un té junto al Nilo antes de salir hacia el aeropuerto.</p></div></li>
+        <li class="ev"><span class="time">16:30</span><div><h3>Paseo por Zamalek sin prisa</h3><p>Boutiques de diseño egipcio (algodón, joyería, perfumes), cafés y un té junto al Nilo antes de salir hacia el aeropuerto.</p></div></li>
         <li class="ev"><span class="time">18:30</span><div><h3>Salida al aeropuerto</h3><p>Vuelo a las 22:25: tenéis que estar allí sobre las 19:30. Mucho tráfico.</p></div></li>
       </ul>
     </section>
@@ -299,17 +342,46 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
 
 <section class="wrap budget" id="presupuesto">
   <h2>Presupuesto estimado</h2>
-  <p class="sub">Euros por persona, suponiendo dos viajeros que comparten taxi o coche. Precios orientativos para extranjeros.</p>
+  <p class="sub">Euros por persona. Se supone que los dos viajeros comparten habitación, taxi y coche.</p>
+  <div class="tiles" id="budgetTiles"></div>
+  <h3 class="bh">En qué se va el dinero</h3>
+  <div class="bar" id="budgetBar" role="img" aria-label="Reparto del presupuesto por categoría"></div>
+  <ul class="bleg" id="budgetLeg"></ul>
+  <h3 class="bh">Día a día</h3>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Día</th><th>Entradas</th><th>Transporte</th><th>Comida</th><th>Alojamiento</th><th>Total</th></tr></thead>
+      <thead><tr>
+        <th scope="col">Día</th>
+        <th scope="col" data-k="act">Entradas</th>
+        <th scope="col" data-k="trans">Transporte</th>
+        <th scope="col" data-k="food">Comida</th>
+        <th scope="col" data-k="lodge">Alojamiento</th>
+        <th scope="col">Reparto</th>
+        <th scope="col">Total</th>
+      </tr></thead>
       <tbody id="budgetRows"></tbody>
       <tfoot id="budgetFoot"></tfoot>
     </table>
   </div>
-  <div class="bar" id="budgetBar" aria-hidden="true"></div>
-  <div class="barleg"><span>Entradas y actividades</span><span>Transporte</span><span>Comida</span><span>Alojamiento</span></div>
-  <p class="fine">Alojamiento: 6 noches en habitación doble con buena relación calidad-precio, repartida entre dos (2 noches en Giza a ~€70 y 4 en Zamalek o Downtown a ~€64). La noche del 31 no cuenta porque el vuelo sale a las 22:25. No incluye vuelos. La entrada de la rave (€120) es la partida más cara. Extras que no suman al total: entrada al interior de la Gran Pirámide (~€22), espectáculo de luz y sonido (~€20) y paseo en camello (~€12). Confirma tarifas en las webs oficiales antes de viajar.</p>
+  <div class="bnotes">
+    <div>
+      <h3>Qué incluye</h3>
+      <ul>
+        <li>Dos viajeros que comparten habitación, taxi y coche; las cifras son por persona.</li>
+        <li>Vuelos: €256 ida y vuelta por persona.</li>
+        <li>Alojamiento: 6 noches, 2 en Giza a ~€70 y 4 en Zamalek o Downtown a ~€64 por habitación. La noche del 31 no cuenta porque el vuelo sale a las 22:25.</li>
+        <li>Las actividades opcionales (Kom el-Shoqafa y los buggies) y la rave (€120), la entrada más cara del viaje.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Qué no incluye</h3>
+      <ul>
+        <li>Extras opcionales: interior de la Gran Pirámide (~€22), luz y sonido (~€20) y paseo en camello (~€12).</li>
+        <li>Compras personales, propinas y seguro de viaje.</li>
+        <li>Precios orientativos para extranjeros: confirma las tarifas en las webs oficiales antes de viajar.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <section class="notes" id="notas">
@@ -321,7 +393,7 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
         <li><strong>El 27:</strong> día tranquilo con el GEM, junto a las pirámides y antes del cambio de hotel. Lonely Planet indica 8:30–19:00 a diario y hasta las 22:00 los sábados y miércoles, aunque los horarios varían según la fuente. Calculad 3,5–4 h y comprad la entrada en tickets.gem.eg.</li>
         <li><strong>El 28:</strong> Old Cairo por la mañana, faluca al atardecer y cena especial.</li>
         <li><strong>El 29:</strong> según la web oficial, la taquilla de la Biblioteca abre de domingo a jueves de 9:30 a 18:30, el sábado de 9:45 a 13:45 y el viernes cierra. Es un día largo, de 5–6 h de ida y vuelta en total.</li>
-        <li><strong>El 30:</strong> Saqqara y Dahshur por la mañana, compras por la tarde y Khan el-Khalili por la noche.</li>
+        <li><strong>El 30:</strong> Saqqara y Dahshur por la mañana, buggies opcionales por la tarde y Khan el-Khalili por la noche. Las compras de Zamalek pasan al día 31.</li>
         <li><strong>El 31:</strong> día corto. Para un vuelo a las 22:25, salid hacia el aeropuerto sobre las 18:30.</li>
       </ul>
     </div>
@@ -352,7 +424,8 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
     sab27: { room: 64, n: 'Zamalek / Downtown' }, dom28: { room: 64, n: 'Zamalek / Downtown' },
     lun29: { room: 64, n: 'Zamalek / Downtown' }, mar30: { room: 64, n: 'Zamalek / Downtown' }
   };
-  var eur = function (n) { return '€' + n; };
+  var eur = function (n) { return '€' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+  var FLIGHT = 256; /* € por persona, ida y vuelta */
 
   /* ---------- Costes por evento (orden en cada día), € por persona ---------- */
   var COST = {
@@ -361,8 +434,8 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
     sab27: ['', 'act:27,trans:5', 'trans:8'],
     dom28: ['act:12,trans:4', 'act:8', 'food:50,trans:3'],
     lun29: ['trans:10', 'act:4', 'act:4,food:18,trans:2', 'act:6', 'trans:10'],
-    mar30: ['act:15,trans:25', 'note:Compras aparte', 'food:15'],
-    mie31: ['act:10,trans:4', 'food:12', 'food:4', 'trans:8']
+    mar30: ['act:15,trans:25', 'act:45', 'food:15'],
+    mie31: ['act:10,trans:4', 'food:12', 'food:4,note:Compras aparte', 'trans:8']
   };
   var EXTRA = {
     jue25: {}, vie26: { food: 18, n: 'desayuno y cenas' }, sab27: { food: 25, n: 'desayuno y cenas' },
@@ -475,18 +548,20 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       trans: [
         ['Coche privado con conductor', '€45–60 por coche', 'Saqqara y Dahshur en 4–5 h, con espera. Es lo más práctico.'],
         ['Excursión de medio día con guía', '€25–40 por persona', 'Recogen en el hotel; menos flexible.'],
-        ['Uber o Careem Zamalek ↔ Khan el-Khalili', '€3–5 por trayecto', 'Mejor pedir el coche a pie de calle ancha.']
+        ['Uber o Careem Zamalek ↔ Khan el-Khalili', '€3–5 por trayecto', 'Mejor pedir el coche a pie de calle ancha.'],
+        ['Hasta el punto de salida de los buggies', '€0–20 por persona', 'El conductor de Saqqara puede esperar. Con operador, la recogida en el hotel cuesta €10–20 por persona.']
       ],
       tick: [
         ['Saqqara', '~€10', 'Pirámide de Zoser y tumbas; Serapeum y algunas tumbas se pagan aparte.'],
         ['Dahshur', '~€5', 'Pirámides Roja y Romboidal; se puede entrar a la Roja.'],
+        ['Buggies o quads en el desierto (opcional)', '~€45 por persona', 'Buggy de 2 plazas €60–120 por 1–2 h, o quad €20–35 por hora. Con puesta de sol €40–70. Confirma casco, gafas, buff y seguro, y reserva con antelación.'],
         ['Khan el-Khalili', 'Gratis', 'El mercado es libre. Regatea entre un 30% y un 50% del primer precio.'],
         ['Té y shisha en El Fishawy', '€1–6', 'Té de menta €1–2, shisha €3–6.']
       ],
       food: [
         ['Comida en ruta', '€6–12', 'Pollo a la parrilla y ensaladas en locales de carretera.'],
         ['Cena cerca de Khan el-Khalili', '€12–20', 'Café Naguib Mahfouz u otros restaurantes del bazar.'],
-        ['Zamalek de tarde', '€5–10', 'Café y pastas entre tienda y tienda.']
+        ['Té y agua en la ruta de buggies', '€2–4', 'Muchos operadores incluyen un té beduino al final.']
       ]
     },
     mie31: {
@@ -533,7 +608,7 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
     kom: { lon: 29.8934, lat: 31.1779, l: 'Kom el-Shoqafa', full: 'Catacumbas de Kom el-Shoqafa', t: 'pyr' },
     saq: { lon: 31.2163, lat: 29.8713, l: 'Saqqara', full: 'Saqqara (Pirámide escalonada)', t: 'pyr' },
     dah: { lon: 31.2075, lat: 29.8, l: 'Dahshur', full: 'Dahshur (Pirámides Roja y Romboidal)', t: 'pyr' },
-    shop: { lon: 31.215, lat: 30.059, l: 'Shopping', full: 'Shopping en Zamalek', t: 'food' },
+    bug: { lon: 31.2185, lat: 29.84, l: 'Buggies', full: 'Buggies en el desierto de Saqqara (opcional, punto aproximado)', t: 'party' },
     khan: { lon: 31.2625, lat: 30.0478, l: 'Khan el-Khalili', full: 'Khan el-Khalili y El Fishawy', t: 'mon' },
     nmec: { lon: 31.251, lat: 29.999, l: 'NMEC', full: 'Museo de las Momias (NMEC)', t: 'mus' },
     rave: { lon: 31.1298, lat: 29.9762, l: 'Rave', full: 'Rave en el complejo de las Grandes Pirámides de Guiza (punto aproximado)', t: 'party' },
@@ -596,9 +671,10 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
         route: ['alx', [29.904, 31.2015], 'bib', [29.9085, 31.2065], [29.904, 31.201], [29.8985, 31.2005], [29.8935, 31.208], 'qai', 'mar', [29.8925, 31.195], [29.8925, 31.185], 'kom', [29.9, 31.183], 'alx'],
         lab: { alx: [18, 8, 'start'], bib: [18, -10, 'start'], qai: [-16, -14, 'start'], mar: [16, 22, 'start'], kom: [18, 6, 'start'] } }
     ],
-    mar30: [{ title: 'Saqqara, Dahshur y bazar', box: [31.0, 31.36, 30.08, 29.77], mode: 'car',
-      route: ['hz', [31.208, 30.012], [31.17, 30.003], [31.185, 29.95], [31.205, 29.90], 'saq', [31.212, 29.84], 'dah', [31.212, 29.84], [31.205, 29.90], [31.185, 29.95], [31.17, 30.003], [31.208, 30.012], 'shop', 'khan'],
-      lab: { hz: [-18, -8, 'end'], saq: [-18, 6, 'end'], dah: [-18, 6, 'end'], shop: [-18, 22, 'end'], khan: [18, 5, 'start'] } }],
+    mar30: [{ title: 'Saqqara, Dahshur, buggies y bazar', box: [31.0, 31.36, 30.08, 29.77], mode: 'car',
+      route: ['hz', [31.208, 30.012], [31.17, 30.003], [31.185, 29.95], [31.205, 29.90], 'saq', 'dah', 'bug', [31.205, 29.90], [31.185, 29.95], [31.17, 30.003], [31.208, 30.012], 'khan'],
+      lab: { hz: [-18, -8, 'end'], saq: [-18, 6, 'end'], dah: [-18, 6, 'end'], bug: [18, 5, 'start'], khan: [18, 5, 'start'] },
+      note: 'Los buggies son opcionales. La posición exacta de la salida depende del operador.' }],
     mie31: [{ title: 'Momias, hotel y aeropuerto', box: [31.19, 31.43, 30.13, 29.97], mode: 'car',
       route: ['nmec', [31.2425, 30.0], [31.232, 30.03], 'hz', [31.245, 30.052], [31.29, 30.045], [31.33, 30.075], [31.37, 30.10], 'air'],
       lab: { nmec: [-18, 6, 'end'], hz: [-18, -6, 'end'], air: [-18, 24, 'end'] },
@@ -802,17 +878,46 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
     }
   });
 
+  /* ---------- Presupuesto ---------- */
+  var gt = grand.act + grand.trans + grand.food + grand.lodge;
+  var all = gt + FLIGHT;
+  var days = rows.length;
+  var tiles = [
+    ['main', 'Total con vuelos', eur(all), 'por persona'],
+    ['', 'Para dos personas', eur(all * 2), 'vuelos incluidos'],
+    ['', 'En destino', eur(gt), 'sin vuelos'],
+    ['', 'Media diaria en destino', eur(Math.round(gt / days)), days + ' días']
+  ];
+  document.getElementById('budgetTiles').innerHTML = tiles.map(function (t) {
+    return '<div class="tile ' + t[0] + '"><small>' + t[1] + '</small><b>' + t[2] + '</b><span>' + t[3] + '</span></div>';
+  }).join('');
+
+  var CAT = [['act', 'Entradas', grand.act], ['trans', 'Transporte', grand.trans], ['food', 'Comida', grand.food], ['lodge', 'Alojamiento', grand.lodge], ['flight', 'Vuelos', FLIGHT]];
+  var bar = document.getElementById('budgetBar'), leg = document.getElementById('budgetLeg');
+  CAT.forEach(function (c) {
+    var pct = c[2] / all * 100, sp = document.createElement('span');
+    sp.className = c[0]; sp.style.width = pct + '%'; sp.title = c[1] + ': ' + eur(c[2]);
+    bar.appendChild(sp);
+    var li = document.createElement('li');
+    li.className = c[0];
+    li.innerHTML = '<i></i>' + c[1] + '<b>' + eur(c[2]) + '</b><span>' + Math.round(pct) + '%</span>';
+    leg.appendChild(li);
+  });
+
+  var mini = function (t, tot) {
+    return '<div class="mini" aria-hidden="true">' + KEYS.map(function (k) {
+      return t[k] ? '<span class="' + k + '" style="width:' + (t[k] / tot * 100) + '%"></span>' : '';
+    }).join('') + '</div>';
+  };
   var tb = document.getElementById('budgetRows');
   rows.forEach(function (r) {
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td>' + r[0] + '</td><td>' + eur(r[1].act) + '</td><td>' + eur(r[1].trans) + '</td><td>' + eur(r[1].food) + '</td><td>' + eur(r[1].lodge) + '</td><td><b>' + eur(r[2]) + '</b></td>';
+    tr.innerHTML = '<th scope="row">' + r[0] + '</th><td>' + eur(r[1].act) + '</td><td>' + eur(r[1].trans) + '</td><td>' + eur(r[1].food) + '</td><td>' + (r[1].lodge ? eur(r[1].lodge) : '<span class="dim0">Sin noche</span>') + '</td><td>' + mini(r[1], r[2]) + '</td><td><b>' + eur(r[2]) + '</b></td>';
     tb.appendChild(tr);
   });
-  var gt = grand.act + grand.trans + grand.food + grand.lodge;
-  document.getElementById('budgetFoot').innerHTML = '<tr><td>Total viaje</td><td>' + eur(grand.act) + '</td><td>' + eur(grand.trans) + '</td><td>' + eur(grand.food) + '</td><td>' + eur(grand.lodge) + '</td><td>~' + eur(gt) + '</td></tr>';
-  KEYS.forEach(function (k) {
-    var sp = document.createElement('span'); sp.className = k; sp.style.width = (grand[k] / gt * 100) + '%';
-    document.getElementById('budgetBar').appendChild(sp);
-  });
+  document.getElementById('budgetFoot').innerHTML =
+    '<tr class="sub"><th scope="row">Total en destino</th><td>' + eur(grand.act) + '</td><td>' + eur(grand.trans) + '</td><td>' + eur(grand.food) + '</td><td>' + eur(grand.lodge) + '</td><td>' + mini(grand, gt) + '</td><td>~' + eur(gt) + '</td></tr>' +
+    '<tr class="fl"><th scope="row">Vuelos</th><td colspan="5">Ida y vuelta, por persona</td><td>' + eur(FLIGHT) + '</td></tr>' +
+    '<tr class="grand"><th scope="row" colspan="6">Total con vuelos</th><td>~' + eur(all) + '</td></tr>';
 })();
 </script>
