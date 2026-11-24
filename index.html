@@ -238,6 +238,31 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .budget tfoot .grand th { position: static; }
 @media (max-width: 640px) { .tile b { font-size: 1.4rem; } .mini { width: 5rem; } }
 
+/* Lugares: miniaturas y ficha emergente */
+.ev { grid-template-columns: 5rem minmax(0, 1fr) auto; align-items: start; }
+.evimg { width: 6rem; height: 4.5rem; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); background: var(--line); }
+.whyrow { margin-top: .35rem; }
+.why { font: inherit; font-size: .85rem; color: var(--a); background: none; border: 0; padding: .25rem 0; min-height: 2rem; cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.why:hover { text-decoration-style: solid; }
+.ev[data-place] { cursor: pointer; }
+.pin { cursor: pointer; outline: none; }
+.pin:hover circle, .pin:hover rect, .pin:hover polygon, .pin:focus-visible circle, .pin:focus-visible rect, .pin:focus-visible polygon { stroke: var(--fg); stroke-width: 3.5; }
+.pop { position: fixed; z-index: 30; width: 18rem; max-width: calc(100vw - 16px); background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 12px 32px -8px color-mix(in srgb, var(--ink) 45%, transparent); overflow: hidden; pointer-events: none; }
+.pop.pinned { pointer-events: auto; }
+.pop img { display: block; width: 100%; height: 10rem; object-fit: cover; background: var(--line); }
+.pop .pb { padding: .75rem .9rem .9rem; position: relative; }
+.pop h5 { margin: 0 1.6rem .3rem 0; font-family: var(--display); font-size: .95rem; line-height: 1.25; }
+.pop p { margin: 0; font-size: .95rem; line-height: 1.4; color: var(--fg); }
+.pop small { display: block; margin-top: .5rem; color: var(--muted); font-size: .72rem; line-height: 1.3; }
+.pclose { display: none; position: absolute; top: .35rem; right: .35rem; width: 2.25rem; height: 2.25rem; border: 0; border-radius: 50%; background: transparent; color: var(--fg); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.pop.pinned .pclose { display: block; }
+@media (max-width: 640px) {
+  .ev { grid-template-columns: 3.6rem minmax(0, 1fr) 4.5rem; gap: .6rem; }
+  .evimg { width: 4.5rem; height: 3.5rem; }
+  .pop { left: 12px !important; right: 12px; top: auto !important; bottom: calc(env(safe-area-inset-bottom, 0px) + 12px); width: auto; max-width: none; max-height: 70vh; overflow-y: auto; }
+  .pop img { height: 9rem; }
+}
+
 /* Notas */
 .notes { background: var(--surface); border-top: 4px solid var(--gold); }
 .notes .wrap { padding-block: 2.5rem; display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
@@ -260,7 +285,6 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
   .mapbox { padding: .75rem 1rem 0; }
   .events { padding: .5rem 1rem 1rem; }
   .opts { padding: .25rem 1rem 1.25rem; }
-  .ev { grid-template-columns: 4rem minmax(0, 1fr); gap: .75rem; }
 }
 }
 html { scroll-padding-top: 4.5rem; }
@@ -466,7 +490,7 @@ html { scroll-padding-top: 4.5rem; }
   </div>
 </section>
 
-<footer class="wrap">Buen viaje · Safar saeed</footer>
+<footer class="wrap">Buen viaje · Safar saeed<br>Fotos de Wikimedia Commons. <a href="https://github.com/andreshere00/egypt-trip/blob/main/CREDITS.md">Ver créditos y licencias</a></footer>
 
 <script>
 (function () {
@@ -736,6 +760,209 @@ html { scroll-padding-top: 4.5rem; }
       note: 'El paseo por Zamalek (16:30) parte del hotel y no suma kilómetros en coche.' }]
   };
 
+  /* ---------- Lugares: foto y por qué ir ---------- */
+  var PLACE = {
+ "air": {
+  "img": "air",
+  "why": "Es la puerta de entrada: llegáis a las 21:25. Con el visado resuelto y el coche reservado, salís pronto hacia Giza."
+ },
+ "hg": {
+  "img": "giza",
+  "why": "Dormir junto al recinto permite entrar a la apertura, con menos calor y menos gente, y volver a descansar en minutos."
+ },
+ "piram": {
+  "img": "piram",
+  "why": "La única maravilla del mundo antiguo que sigue en pie. Se levantó hacia el 2560 a. C. para Keops y aún mide casi 139 m."
+ },
+ "esf": {
+  "img": "esf",
+  "why": "Escultura monumental de unos 73 m de largo tallada en la roca, junto a la pirámide de Kefrén. Es la foto clásica de Giza."
+ },
+ "pan": {
+  "img": "giza",
+  "why": "Desde este mirador se ven juntas las tres pirámides principales. Es el punto de las fotos panorámicas y del paseo en camello."
+ },
+ "gem": {
+  "img": "gem",
+  "why": "El mayor museo arqueológico del mundo dedicado a una sola civilización. Reúne el tesoro completo de Tutankamón y está a 10 min de las pirámides."
+ },
+ "hz": {
+  "img": "zam",
+  "why": "Isla del Nilo tranquila, con cafés, galerías y boutiques de diseño egipcio. Buena base para el resto del viaje, lejos del caos del centro."
+ },
+ "cit": {
+  "img": "cit",
+  "why": "Fortaleza medieval del siglo XII que domina El Cairo. Dentro está la mezquita de Muhammad Ali, con vistas de toda la ciudad."
+ },
+ "muz": {
+  "img": "muz",
+  "why": "Calle peatonal con la mayor concentración de arquitectura islámica medieval de El Cairo: mezquitas, madrasas y puertas históricas."
+ },
+ "fal": {
+  "img": "fal",
+  "why": "Barca de vela tradicional del Nilo. Al atardecer ofrece otra vista de la ciudad y es el plan más tranquilo para un cumpleaños."
+ },
+ "cena": {
+  "img": "cena",
+  "why": "Cena con danza del vientre en un barco por el Nilo: una experiencia muy de El Cairo para celebrar el cumpleaños."
+ },
+ "ram": {
+  "img": "ram",
+  "why": "Principal estación de El Cairo y salida de los trenes a Alejandría. Conviene llegar con tiempo y los billetes ya comprados."
+ },
+ "alx": {
+  "img": "alx",
+  "why": "Segunda ciudad de Egipto, fundada por Alejandro Magno en el 331 a. C. Aporta otro ambiente: mar, marisco y brisa mediterránea."
+ },
+ "bib": {
+  "img": "bib",
+  "why": "Biblioteca moderna que rinde homenaje a la antigua Biblioteca de Alejandría. Su edificio circular y sus muros con escrituras de muchos idiomas son únicos."
+ },
+ "qai": {
+  "img": "qai",
+  "why": "Fuerte del siglo XV levantado sobre el solar del antiguo Faro de Alejandría, otra maravilla antigua, con piedras del propio faro."
+ },
+ "kom": {
+  "img": "kom",
+  "why": "Catacumbas de los siglos I–II con una mezcla única de estilos egipcio, griego y romano. Se baja por una escalera de caracol."
+ },
+ "mar": {
+  "img": null,
+  "why": "Alejandría es famosa por su pescado y marisco fresco, y comer frente al puerto forma parte de la visita."
+ },
+ "saq": {
+  "img": "saq",
+  "why": "Necrópolis de Menfis con la pirámide escalonada de Zoser (~2650 a. C.), la pirámide más antigua que se conoce."
+ },
+ "dah": {
+  "img": "dah",
+  "why": "Aquí están la Pirámide Roja y la Romboidal, los primeros intentos de pirámide lisa. Hay mucha menos gente que en Giza y se puede entrar a la Roja."
+ },
+ "bug": {
+  "img": "bug",
+  "why": "Plan de aventura por las dunas del desierto con luz de atardecer. Es lo más parecido al desierto abierto sin salir de la zona de El Cairo."
+ },
+ "khan": {
+  "img": "khan",
+  "why": "Bazar fundado en el siglo XIV, el mercado más famoso de El Cairo: especias, joyería y el café histórico El Fishawy."
+ },
+ "nmec": {
+  "img": "nmec",
+  "why": "Aquí se exponen las momias reales, que no están en el GEM, en una sala pensada para ellas."
+ },
+ "azh": {
+  "img": "azh",
+  "why": "Parque con vistas del Cairo islámico y de la Ciudadela. Un descanso verde en medio de la ciudad."
+ },
+ "rave": {
+  "img": "giza",
+  "why": "Una rave en el complejo de las Grandes Pirámides de Guiza: bailar con las pirámides de fondo."
+ },
+ "ben": {
+  "img": null,
+  "why": "Parada del tren entre El Cairo y Alejandría."
+ },
+ "tan": {
+  "img": null,
+  "why": "Parada del tren entre El Cairo y Alejandría."
+ },
+ "dam": {
+  "img": null,
+  "why": "Parada del tren entre El Cairo y Alejandría."
+ },
+ "alxr": {
+  "img": "alx",
+  "why": "Segunda ciudad de Egipto, fundada por Alejandro Magno en el 331 a. C. Aporta otro ambiente: mar, marisco y brisa mediterránea."
+ }
+};
+  var PH = {
+ "air": {
+  "by": "Alensha",
+  "lic": "CC BY-SA 4.0"
+ },
+ "giza": {
+  "by": "KennyOMG",
+  "lic": "CC BY-SA 4.0"
+ },
+ "piram": {
+  "by": "Douwe C. van der Zee",
+  "lic": "CC BY-SA 4.0"
+ },
+ "esf": {
+  "by": "Hesham Ebaid",
+  "lic": "CC0"
+ },
+ "gem": {
+  "by": "Mohamed abdelzaher",
+  "lic": "CC BY-SA 4.0"
+ },
+ "zam": {
+  "by": "Abdallah (talk)",
+  "lic": "CC BY-SA 3.0"
+ },
+ "cit": {
+  "by": "Ahmed Al.Badawy from Cairo, Egypt",
+  "lic": "CC BY-SA 2.0"
+ },
+ "fal": {
+  "by": "Marc Ryckaert (MJJR)",
+  "lic": "CC BY 3.0"
+ },
+ "cena": {
+  "by": "Dan Lundberg",
+  "lic": "CC BY-SA 2.0"
+ },
+ "ram": {
+  "by": "Osama Khalil",
+  "lic": "CC BY-SA 4.0"
+ },
+ "alx": {
+  "by": "Francisco Anzola",
+  "lic": "CC BY 2.0"
+ },
+ "bib": {
+  "by": "Azniv Stepanian",
+  "lic": "CC BY-SA 4.0"
+ },
+ "qai": {
+  "by": "Hmkree",
+  "lic": "CC BY-SA 4.0"
+ },
+ "kom": {
+  "by": "Bilal Detailz",
+  "lic": "CC BY-SA 4.0"
+ },
+ "saq": {
+  "by": "Olaf Tausch",
+  "lic": "CC BY 3.0"
+ },
+ "dah": {
+  "by": "Olaf Tausch",
+  "lic": "CC BY 3.0"
+ },
+ "bug": {
+  "by": "Roland Unger",
+  "lic": "CC BY-SA 3.0"
+ },
+ "khan": {
+  "by": "Heba otefy",
+  "lic": "CC BY-SA 4.0"
+ },
+ "nmec": {
+  "by": "Roland Unger",
+  "lic": "CC BY-SA 4.0"
+ },
+ "muz": {
+  "by": "R Prazeres",
+  "lic": "CC BY-SA 4.0"
+ },
+ "azh": {
+  "by": "Yasser Nazmi",
+  "lic": "CC BY-SA 3.0"
+ }
+};
+  var EVP = { jue25: ['air', 'hg'], vie26: ['piram', 'hg', 'rave'], sab27: ['hg', 'gem', 'hz'], dom28: ['cit', 'fal', 'cena'], lun29: ['ram', 'bib', 'qai', 'kom', 'alx'], mar30: ['saq', 'bug', 'khan'], mie31: ['nmec', 'hz', 'hz', 'air'] };
+
   /* ---------- Utilidades ---------- */
   function S(tag, attrs, parent) {
     var e = document.createElementNS(NS, tag);
@@ -834,7 +1061,7 @@ html { scroll-padding-top: 4.5rem; }
     /* Pines */
     var COL = { pyr: 'var(--terra)', mus: 'var(--lapis)', mon: 'var(--gold)', hotel: 'var(--nile)', hub: 'var(--fg)', party: 'var(--terra)', food: 'var(--papyrus)', sm: 'var(--muted)' };
     order.forEach(function (id, n) {
-      var q = P[id], x = X(q.lon), y = Y(q.lat), c = COL[q.t] || 'var(--fg)', g = S('g', {}, svg);
+      var q = P[id], x = X(q.lon), y = Y(q.lat), c = COL[q.t] || 'var(--fg)', g = S('g', { 'class': 'pin', tabindex: 0, role: 'button', 'aria-label': 'Por qué ir: ' + q.full, 'data-place': id }, svg);
       var sh;
       if (q.t === 'pyr') sh = S('polygon', { points: x + ',' + (y - 15) + ' ' + (x + 15) + ',' + (y + 11) + ' ' + (x - 15) + ',' + (y + 11) }, g);
       else if (q.t === 'mus') sh = S('rect', { x: x - 12, y: y - 12, width: 24, height: 24, rx: 3 }, g);
@@ -901,8 +1128,25 @@ html { scroll-padding-top: 4.5rem; }
         else { t[p[0]] += +p[1]; chip.className = 'chip ' + p[0]; chip.textContent = LBL[p[0]] + ' ~' + eur(p[1]); }
         box.appendChild(chip);
       });
-      ev.lastElementChild.appendChild(box);
+      ev.children[1].appendChild(box);
     });
+    var ep = EVP[day.id] || [];
+    day.querySelectorAll('.ev').forEach(function (ev, i) {
+      var id = ep[i], pl = id && PLACE[id];
+      if (!pl) return;
+      ev.dataset.place = id;
+      var body = ev.children[1], row = document.createElement('div');
+      row.className = 'whyrow';
+      row.innerHTML = '<button type="button" class="why" aria-label="Por qué ir: ' + P[id].full + '">¿Por qué ir?</button>';
+      body.appendChild(row);
+      if (pl.img) {
+        var im = document.createElement('img');
+        im.className = 'evimg'; im.src = 'assets/img/' + pl.img + '.jpg'; im.alt = P[id].full;
+        im.width = 96; im.height = 72; im.loading = 'lazy'; im.decoding = 'async';
+        ev.appendChild(im);
+      }
+    });
+
     var ex = EXTRA[day.id] || {};
     t.food += ex.food || 0; t.trans += ex.trans || 0;
     var lg = LODGE[day.id];
@@ -968,6 +1212,69 @@ html { scroll-padding-top: 4.5rem; }
     link.innerHTML = '<span>' + (nx ? 'Siguiente día: ' + NAMES[nx.id] : 'Ver el presupuesto') + '</span><span aria-hidden="true">↓</span>';
     day.appendChild(link);
   });
+
+  /* ---------- Ficha emergente de cada lugar ---------- */
+  (function () {
+    var pop = document.createElement('div');
+    pop.className = 'pop'; pop.id = 'pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-live', 'polite'); pop.hidden = true;
+    document.body.appendChild(pop);
+    var current = null, pinned = false;
+    var hide = function () { pop.hidden = true; pop.classList.remove('pinned'); current = null; pinned = false; };
+    var place = function (t) {
+      var r = t.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      var left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2));
+      var top = r.top - h - 10;
+      if (top < 8) top = Math.min(window.innerHeight - h - 8, r.bottom + 10);
+      pop.style.left = left + 'px'; pop.style.top = Math.max(8, top) + 'px';
+    };
+    var show = function (t, pin) {
+      var id = t.getAttribute('data-place'), pl = PLACE[id], q = P[id];
+      if (!pl || !q) return;
+      var ph = pl.img && PH[pl.img];
+      pop.innerHTML = (pl.img ? '<img src="assets/img/' + pl.img + '.jpg" alt="' + q.full.replace(/"/g, '&quot;') + '" width="320" height="200">' : '') +
+        '<div class="pb"><button type="button" class="pclose" aria-label="Cerrar">×</button><h5>' + q.full + '</h5><p>' + pl.why + '</p>' +
+        (ph ? '<small>Foto: ' + ph.by + ' · ' + ph.lic + ' (Wikimedia Commons)</small>' : '') + '</div>';
+      current = t; pinned = !!pin;
+      pop.classList.toggle('pinned', pinned);
+      pop.hidden = false;
+      place(t);
+    };
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType !== 'mouse' || pinned) return;
+      var t = e.target.closest && e.target.closest('[data-place]');
+      if (t && t !== current) show(t, false);
+    });
+    document.addEventListener('pointerout', function (e) {
+      if (e.pointerType !== 'mouse' || pinned) return;
+      var t = e.target.closest && e.target.closest('[data-place]');
+      if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) hide();
+    });
+    document.addEventListener('focusin', function (e) {
+      if (pinned) return;
+      var t = e.target.closest && e.target.closest('[data-place]');
+      if (t) show(t, false);
+    });
+    document.addEventListener('focusout', function (e) {
+      if (pinned) return;
+      var t = e.target.closest && e.target.closest('[data-place]');
+      if (t && !(e.relatedTarget && t.contains(e.relatedTarget))) hide();
+    });
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.pclose')) { hide(); return; }
+      if (e.target.closest && e.target.closest('#pop')) return;
+      var t = e.target.closest && e.target.closest('[data-place]');
+      if (t) { if (pinned && current === t) hide(); else show(t, true); }
+      else hide();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { hide(); return; }
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pin')) {
+        e.preventDefault(); if (pinned && current === e.target) hide(); else show(e.target, true);
+      }
+    });
+    window.addEventListener('scroll', function () { if (!pop.hidden && current) { if (pinned) place(current); else hide(); } }, { passive: true });
+    window.addEventListener('resize', function () { if (!pop.hidden && current) place(current); });
+  })();
 
   /* ---------- Navegación: día activo y progreso ---------- */
   (function () {
