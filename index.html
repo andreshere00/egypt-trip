@@ -6,6 +6,7 @@
 <title>Egipto 25–31 Marzo</title>
 <meta name="description" content="Itinerario de siete días por Egipto con mapas diarios, entradas, transporte, comida, alojamiento y presupuesto.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b8841a'/%3E%3Cpolygon points='16,6 28,24 4,24' fill='%232d2117'/%3E%3C/svg%3E">
+<script>try { var th = localStorage.getItem('theme'); if (th === 'dark' || th === 'light') document.documentElement.setAttribute('data-theme', th); } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
@@ -72,6 +73,17 @@ h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 7vw
 /* Navegación */
 .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sky-top); }
+.nav .wrap { display: flex; align-items: center; gap: .5rem; }
+.nav ul { flex: 1; min-width: 0; }
+.theme-btn { flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--fg); cursor: pointer; }
+.theme-btn:hover { border-color: var(--gold); }
+.theme-btn .i-sun { display: none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display: block; }
+:root[data-theme="dark"] .theme-btn .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .i-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .i-moon { display: none; }
+}
 .nav ul { display: flex; gap: .4rem; list-style: none; margin: 0; padding: .6rem 0; overflow-x: auto; }
 .nav a { display: block; text-decoration: none; font-family: var(--display); font-size: .85rem; letter-spacing: .06em; padding: .35rem .8rem; border: 1px solid var(--line); border-radius: 2px; white-space: nowrap; background: var(--surface); }
 .nav a:hover { border-color: var(--gold); }
@@ -271,6 +283,10 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       <li><a href="#presupuesto">Presupuesto</a></li>
       <li><a href="#notas">Notas</a></li>
     </ul>
+    <button type="button" class="theme-btn" id="themeBtn" aria-label="Cambiar a modo nocturno" title="Cambiar a modo nocturno">
+      <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></g></svg>
+    </button>
   </div>
 </nav>
 
@@ -890,6 +906,25 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       day.appendChild(wrap);
     }
   });
+
+  /* ---------- Modo nocturno ---------- */
+  (function () {
+    var root = document.documentElement, btn = document.getElementById('themeBtn');
+    var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    var isDark = function () { var t = root.getAttribute('data-theme'); return t ? t === 'dark' : !!(mq && mq.matches); };
+    var sync = function () {
+      var label = isDark() ? 'Cambiar a modo diurno' : 'Cambiar a modo nocturno';
+      btn.setAttribute('aria-label', label); btn.setAttribute('title', label);
+    };
+    btn.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+    if (mq && mq.addEventListener) mq.addEventListener('change', sync);
+    sync();
+  })();
 
   /* ---------- Presupuesto ---------- */
   var gt = grand.act + grand.trans + grand.food + grand.lodge;
