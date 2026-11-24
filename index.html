@@ -258,7 +258,15 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
   .opts { padding: .25rem 1rem 1.25rem; }
   .ev { grid-template-columns: 4rem minmax(0, 1fr); gap: .75rem; }
 }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+html { scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+  .day, .budget, .notes { scroll-snap-align: start; }
+}
+.nextday { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: 0; padding: .9rem 1.5rem; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--a) 8%, var(--surface)); color: var(--fg); text-decoration: none; font-family: var(--display); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; min-height: 3rem; }
+.nextday:hover { background: color-mix(in srgb, var(--a) 16%, var(--surface)); }
+.nextday span:last-child { color: var(--a); font-size: 1.2rem; }
+@media (max-width: 640px) { .nextday { padding-inline: 1rem; } }
 </style>
 </head>
 <body>
@@ -918,6 +926,12 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
       });
       day.appendChild(wrap);
     }
+    var nx = day.nextElementSibling;
+    var link = document.createElement('a');
+    link.className = 'nextday';
+    link.href = nx ? '#' + nx.id : '#presupuesto';
+    link.innerHTML = '<span>' + (nx ? 'Siguiente día: ' + NAMES[nx.id] : 'Ver el presupuesto') + '</span><span aria-hidden="true">↓</span>';
+    day.appendChild(link);
   });
 
   /* ---------- Navegación: día activo y progreso ---------- */
