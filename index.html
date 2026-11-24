@@ -1,5 +1,13 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Egipto 25–31 Marzo</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Itinerario de siete días por Egipto con mapas diarios, entradas, transporte, comida, alojamiento y presupuesto.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b8841a'/%3E%3Cpolygon points='16,6 28,24 4,24' fill='%232d2117'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Alegreya+Sans:wght@400;500;700&display=swap">
 <style>
 /* Layout: cabecera con paisaje; cada día es una tarjeta con la fecha a la izquierda y, a la derecha, mapa de la ruta, itinerario y opciones de transporte, entradas y comida. */
@@ -45,6 +53,9 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
 body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 18px; line-height: 1.5; margin: 0; }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
@@ -226,8 +237,10 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
+</head>
+<body>
 
-<header class="hero">
+<header class="hero" id="top">
   <div class="wrap">
     <p class="eyebrow">Jueves 25 – Miércoles 31 de marzo</p>
     <h1>Egipto: de Giza al Nilo</h1>
@@ -921,3 +934,5 @@ footer { text-align: center; padding-block: 1.5rem; color: var(--muted); font-si
     '<tr class="grand"><th scope="row" colspan="6">Total con vuelos</th><td>~' + eur(all) + '</td></tr>';
 })();
 </script>
+</body>
+</html>
